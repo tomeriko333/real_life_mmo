@@ -9,6 +9,7 @@ const GameDashboard = () => {
   const [playerXP, setPlayerXP] = useState(2500);
   const [playerLevel, setPlayerLevel] = useState(1);
   const [quests, setQuests] = useState<Quest[]>([
+    // Daily Spiritual & Religious
     {
       id: '1',
       title: 'Read Torah Portion',
@@ -20,33 +21,6 @@ const GameDashboard = () => {
     },
     {
       id: '2',
-      title: 'Attend Work',
-      description: 'Show up to work and give your best effort',
-      xpReward: 300,
-      difficulty: 'easy',
-      icon: '💼',
-      completed: false
-    },
-    {
-      id: '3',
-      title: 'Prepare Shabbat Meal',
-      description: 'Cook and prepare food for Friday night dinner',
-      xpReward: 400,
-      difficulty: 'medium',
-      icon: '🍷',
-      completed: false
-    },
-    {
-      id: '4',
-      title: 'Shabbat Without Smoking',
-      description: 'Complete entire Shabbat without smoking - ultimate discipline',
-      xpReward: 1000,
-      difficulty: 'legendary',
-      icon: '🚭',
-      completed: false
-    },
-    {
-      id: '5',
       title: 'Morning Prayer',
       description: 'Start the day with morning prayers and gratitude',
       xpReward: 250,
@@ -55,12 +29,123 @@ const GameDashboard = () => {
       completed: false
     },
     {
+      id: '3',
+      title: 'Shabbat Without Smoking',
+      description: 'Complete entire Shabbat without smoking - ultimate discipline',
+      xpReward: 1000,
+      difficulty: 'legendary',
+      icon: '🚭',
+      completed: false
+    },
+    {
+      id: '4',
+      title: 'Lashon Hara Shield',
+      description: 'No gossip all day - guard your speech',
+      xpReward: 400,
+      difficulty: 'medium',
+      icon: '🗣️',
+      completed: false
+    },
+    // Daily Personal Growth
+    {
+      id: '5',
+      title: 'Digital Detox Hour',
+      description: 'No phone for 60 minutes - disconnect to reconnect',
+      xpReward: 200,
+      difficulty: 'easy',
+      icon: '📱',
+      completed: false
+    },
+    {
       id: '6',
-      title: 'Study Session',
-      description: 'Spend 30 minutes studying religious texts or personal development',
+      title: 'Family Time',
+      description: '30 minutes quality time, no devices',
       xpReward: 350,
       difficulty: 'medium',
-      icon: '📚',
+      icon: '👨‍👩‍👧',
+      completed: false
+    },
+    {
+      id: '7',
+      title: 'Acts of Kindness',
+      description: 'One meaningful helping act for someone today',
+      xpReward: 300,
+      difficulty: 'medium',
+      icon: '🤝',
+      completed: false
+    },
+    {
+      id: '8',
+      title: 'Gratitude Journal',
+      description: 'Write 1 thing you\'re thankful for',
+      xpReward: 150,
+      difficulty: 'easy',
+      icon: '💭',
+      completed: false
+    },
+    // Tzedakah & Work
+    {
+      id: '9',
+      title: 'Tzedakah 5%',
+      description: 'Donate 5% of monthly income',
+      xpReward: 250,
+      difficulty: 'medium',
+      icon: '🌱',
+      completed: false
+    },
+    {
+      id: '10',
+      title: 'Tzedakah 10%',
+      description: 'Donate 10% of monthly income - true generosity',
+      xpReward: 1000,
+      difficulty: 'legendary',
+      icon: '🌱',
+      completed: false
+    },
+    {
+      id: '11',
+      title: 'Attend Work',
+      description: 'Show up to work and give your best effort',
+      xpReward: 300,
+      difficulty: 'easy',
+      icon: '💼',
+      completed: false
+    },
+    // Weekly Challenges
+    {
+      id: '12',
+      title: 'Elder Outreach',
+      description: 'Call grandparents or elderly relatives',
+      xpReward: 300,
+      difficulty: 'medium',
+      icon: '📞',
+      completed: false
+    },
+    {
+      id: '13',
+      title: 'Week Warrior',
+      description: 'Exercise 3 times this week',
+      xpReward: 700,
+      difficulty: 'hard',
+      icon: '🏃',
+      completed: false
+    },
+    {
+      id: '14',
+      title: 'Hospitality Hero',
+      description: 'Host Shabbat guests this week',
+      xpReward: 800,
+      difficulty: 'hard',
+      icon: '🏠',
+      completed: false
+    },
+    {
+      id: '15',
+      title: 'Prepare Shabbat Meal',
+      description: 'Cook and prepare food for Friday night dinner',
+      xpReward: 400,
+      difficulty: 'medium',
+      icon: '🍷',
       completed: false
     }
   ]);
