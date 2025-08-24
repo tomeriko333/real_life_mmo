@@ -8,35 +8,69 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Game-inspired background */
+    --background: 230 35% 7%;
+    --foreground: 210 40% 98%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    /* Card system */
+    --card: 230 30% 12%;
+    --card-foreground: 210 40% 98%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 230 30% 12%;
+    --popover-foreground: 210 40% 98%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Primary - Vibrant Blue */
+    --primary: 214 88% 55%;
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 214 88% 65%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Secondary - Game Orange */
+    --secondary: 25 95% 58%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Muted elements */
+    --muted: 230 25% 18%;
+    --muted-foreground: 215 20.2% 65.1%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Accent - Purple power */
+    --accent: 270 91% 65%;
+    --accent-foreground: 0 0% 100%;
 
+    /* XP/Success - Gold */
+    --success: 45 93% 58%;
+    --success-foreground: 0 0% 100%;
+
+    /* Destructive - Red */
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    /* UI Elements */
+    --border: 230 25% 18%;
+    --input: 230 25% 18%;
+    --ring: 214 88% 55%;
 
-    --radius: 0.5rem;
+    --radius: 1rem;
+
+    /* Game-specific tokens */
+    --xp-bar: 214 88% 55%;
+    --level-gold: 45 93% 58%;
+    --quest-complete: 142 76% 36%;
+    
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(214 88% 55%), hsl(214 88% 65%));
+    --gradient-secondary: linear-gradient(135deg, hsl(25 95% 58%), hsl(25 95% 68%));
+    --gradient-accent: linear-gradient(135deg, hsl(270 91% 65%), hsl(280 91% 75%));
+    --gradient-success: linear-gradient(135deg, hsl(45 93% 58%), hsl(45 93% 68%));
+    --gradient-card: linear-gradient(145deg, hsl(230 30% 12%), hsl(230 30% 15%));
+    
+    /* Shadows & Glows */
+    --glow-primary: 0 0 20px hsl(214 88% 55% / 0.3);
+    --glow-success: 0 0 20px hsl(45 93% 58% / 0.3);
+    --shadow-card: 0 8px 32px hsl(230 35% 3% / 0.5);
+    
+    /* Animations */
+    --transition-bounce: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
     --sidebar-background: 0 0% 98%;
 
