@@ -12,15 +12,28 @@ const PlayerStats = ({ currentXP, currentLevel, onLevelUp }: PlayerStatsProps) =
   const [displayLevel, setDisplayLevel] = useState(currentLevel);
   const [isLevelingUp, setIsLevelingUp] = useState(false);
   
-  // Calculate XP needed for next level (exponential scaling)
-  const getXPForLevel = (level: number) => Math.floor(100 * Math.pow(1.5, level - 1));
+  // Calculate XP needed for next level (Supercell-style exponential scaling)
+  const getXPForLevel = (level: number) => {
+    if (level === 1) return 0;
+    if (level <= 5) return Math.floor(1000 * Math.pow(1.8, level - 1));
+    if (level <= 10) return Math.floor(5000 * Math.pow(1.6, level - 5));
+    if (level <= 20) return Math.floor(25000 * Math.pow(1.4, level - 10));
+    return Math.floor(100000 * Math.pow(1.3, level - 20));
+  };
   
   const currentLevelXP = getXPForLevel(displayLevel);
   const nextLevelXP = getXPForLevel(displayLevel + 1);
   const progressToNext = ((currentXP - currentLevelXP) / (nextLevelXP - currentLevelXP)) * 100;
   
   useEffect(() => {
-    const targetLevel = Math.floor(Math.log(currentXP / 100) / Math.log(1.5)) + 1;
+    // Calculate level based on total XP (Supercell-style)
+    let targetLevel = 1;
+    let totalXPNeeded = 0;
+    
+    while (currentXP >= totalXPNeeded + getXPForLevel(targetLevel + 1)) {
+      totalXPNeeded += getXPForLevel(targetLevel + 1);
+      targetLevel++;
+    }
     
     if (targetLevel > displayLevel) {
       setIsLevelingUp(true);

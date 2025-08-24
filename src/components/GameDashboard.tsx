@@ -6,14 +6,14 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 const GameDashboard = () => {
-  const [playerXP, setPlayerXP] = useState(150);
+  const [playerXP, setPlayerXP] = useState(2500);
   const [playerLevel, setPlayerLevel] = useState(1);
   const [quests, setQuests] = useState<Quest[]>([
     {
       id: '1',
       title: 'Read Torah Portion',
       description: 'Complete today\'s Torah reading with focus and intention',
-      xpReward: 50,
+      xpReward: 500,
       difficulty: 'medium',
       icon: '📖',
       completed: false
@@ -22,7 +22,7 @@ const GameDashboard = () => {
       id: '2',
       title: 'Attend Work',
       description: 'Show up to work and give your best effort',
-      xpReward: 30,
+      xpReward: 300,
       difficulty: 'easy',
       icon: '💼',
       completed: false
@@ -31,7 +31,7 @@ const GameDashboard = () => {
       id: '3',
       title: 'Prepare Shabbat Meal',
       description: 'Cook and prepare food for Friday night dinner',
-      xpReward: 40,
+      xpReward: 400,
       difficulty: 'medium',
       icon: '🍷',
       completed: false
@@ -40,7 +40,7 @@ const GameDashboard = () => {
       id: '4',
       title: 'Shabbat Without Smoking',
       description: 'Complete entire Shabbat without smoking - ultimate discipline',
-      xpReward: 100,
+      xpReward: 1000,
       difficulty: 'legendary',
       icon: '🚭',
       completed: false
@@ -49,7 +49,7 @@ const GameDashboard = () => {
       id: '5',
       title: 'Morning Prayer',
       description: 'Start the day with morning prayers and gratitude',
-      xpReward: 25,
+      xpReward: 250,
       difficulty: 'easy',
       icon: '🙏',
       completed: false
@@ -58,7 +58,7 @@ const GameDashboard = () => {
       id: '6',
       title: 'Study Session',
       description: 'Spend 30 minutes studying religious texts or personal development',
-      xpReward: 35,
+      xpReward: 350,
       difficulty: 'medium',
       icon: '📚',
       completed: false
