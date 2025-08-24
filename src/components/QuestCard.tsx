@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { ChevronDown, ChevronUp } from "lucide-react";
 
 export interface Quest {
   id: string;
@@ -11,15 +12,18 @@ export interface Quest {
   difficulty: 'easy' | 'medium' | 'hard' | 'legendary';
   icon: string;
   completed: boolean;
+  seasonal?: boolean;
 }
 
 interface QuestCardProps {
   quest: Quest;
   onComplete: (questId: string, xpGained: number) => void;
+  isHebrew?: boolean;
 }
 
-const QuestCard = ({ quest, onComplete }: QuestCardProps) => {
+const QuestCard = ({ quest, onComplete, isHebrew = false }: QuestCardProps) => {
   const [isCompleting, setIsCompleting] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
   
   const difficultyColors = {
     easy: 'bg-success/20 text-success border-success/30',
@@ -42,16 +46,41 @@ const QuestCard = ({ quest, onComplete }: QuestCardProps) => {
     <Card className={`p-4 transition-all duration-300 ${
       quest.completed 
         ? 'bg-muted/50 border-success/30' 
-        : 'bg-gradient-to-br from-card to-muted hover:shadow-lg hover:scale-105 border-primary/20'
-    } ${isCompleting ? 'animate-bounce-in' : ''}`}>
+        : `bg-gradient-to-br from-card to-muted hover:shadow-lg hover:scale-105 border-primary/20 ${quest.seasonal ? 'border-accent/50 bg-gradient-to-br from-accent/5 to-primary/5' : ''}`
+    } ${isCompleting ? 'animate-bounce-in' : ''}`} dir={isHebrew ? 'rtl' : 'ltr'}>
       <div className="flex items-start justify-between mb-3">
         <div className="flex items-center gap-3">
           <div className="text-2xl">{quest.icon}</div>
-          <div>
-            <h3 className={`font-semibold ${quest.completed ? 'line-through text-muted-foreground' : 'text-foreground'}`}>
-              {quest.title}
-            </h3>
-            <p className="text-sm text-muted-foreground">{quest.description}</p>
+          <div className="flex-1">
+            <div className="flex items-center gap-2">
+              <h3 className={`font-semibold ${quest.completed ? 'line-through text-muted-foreground' : 'text-foreground'}`}>
+                {quest.title}
+              </h3>
+              {quest.seasonal && <Badge className="text-xs bg-accent/20 text-accent">🎉 Holiday</Badge>}
+            </div>
+            <p className={`text-sm text-muted-foreground ${!isExpanded ? 'line-clamp-2' : ''}`}>
+              {quest.description}
+            </p>
+            {quest.description.length > 50 && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsExpanded(!isExpanded)}
+                className="mt-1 h-6 px-2 text-xs"
+              >
+                {isExpanded ? (
+                  <>
+                    <ChevronUp className="h-3 w-3 mr-1" />
+                    Less
+                  </>
+                ) : (
+                  <>
+                    <ChevronDown className="h-3 w-3 mr-1" />
+                    More
+                  </>
+                )}
+              </Button>
+            )}
           </div>
         </div>
         <Badge className={difficultyColors[quest.difficulty]}>
