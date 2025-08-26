@@ -439,6 +439,36 @@ const GameDashboard = () => {
       completed: false,
       category: 'weekly'
     },
+    {
+      id: 'buy-clothes',
+      title: 'Buy Clothes (Count)',
+      titleHebrew: 'קנה בגדים (כמות)',
+      description: 'Enter number of clothing items purchased - refresh your style',
+      descriptionHebrew: 'הכנס מספר פריטי הלבשה שנרכשו - רענן את הסטיל',
+      xpReward: 100,
+      difficulty: 'medium',
+      icon: '🛍️',
+      completed: false,
+      category: 'weekly',
+      type: 'numeric',
+      requiresInput: true,
+      inputType: 'count'
+    },
+    {
+      id: 'torah-reading-minutes',
+      title: 'Torah Study (Minutes)',
+      titleHebrew: 'לימוד תורה (דקות)',
+      description: 'Enter minutes of Torah study - spiritual growth through learning',
+      descriptionHebrew: 'הכנס דקות לימוד תורה - צמיחה רוחנית באמצעות לימוד',
+      xpReward: 20,
+      difficulty: 'medium',
+      icon: '⏰',
+      completed: false,
+      category: 'spiritual',
+      type: 'numeric',
+      requiresInput: true,
+      inputType: 'minutes'
+    },
 
     // EASY QUESTS - Accessible Daily Habits
     {
@@ -644,38 +674,6 @@ const GameDashboard = () => {
       category: 'daily',
       type: 'negative',
       isNegative: true
-    },
-
-    // NUMERIC INPUT MISSIONS
-    {
-      id: 'buy-clothes',
-      title: 'Buy Clothes',
-      titleHebrew: 'קנה בגדים',
-      description: 'Enter number of clothing items purchased - refresh your style',
-      descriptionHebrew: 'הכנס מספר פריטי הלבשה שנרכשו - רענן את הסטיל',
-      xpReward: 100,
-      difficulty: 'medium',
-      icon: '👕',
-      completed: false,
-      category: 'weekly',
-      type: 'numeric',
-      requiresInput: true,
-      inputType: 'count'
-    },
-    {
-      id: 'torah-reading-minutes',
-      title: 'Torah Reading',
-      titleHebrew: 'לימוד תורה',
-      description: 'Enter minutes of Torah study - spiritual growth through learning',
-      descriptionHebrew: 'הכנס דקות לימוד תורה - צמיחה רוחנית באמצעות לימוד',
-      xpReward: 20,
-      difficulty: 'medium',
-      icon: '📖',
-      completed: false,
-      category: 'spiritual',
-      type: 'numeric',
-      requiresInput: true,
-      inputType: 'minutes'
     }
   ]);
 
