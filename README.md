@@ -1,4 +1,4 @@
-# Welcome to your Lovable project
+# Real Life MMORPG - Level Up Your Life!
 
 ## Project info
 
