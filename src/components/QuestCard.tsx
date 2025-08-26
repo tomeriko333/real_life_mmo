@@ -8,22 +8,87 @@ import NumericInput from "./NumericInput";
 import { type QuestActivity } from "../utils/timeSystem";
 import { XPCalculator } from "../utils/xpSystem";
 
+/**
+ * ========================================
+ * QUEST SYSTEM ARCHITECTURE DOCUMENTATION
+ * ========================================
+ * 
+ * This is a comprehensive Real Life MMORPG quest system with automatic sorting,
+ * numeric inputs, negative XP, and Hebrew translations.
+ * 
+ * QUEST TYPES:
+ * 1. Standard Quests: Fixed XP reward (e.g., "Clean Room" = +250 XP)
+ * 2. Numeric Quests: XP = baseXP × input value (e.g., "Buy Clothes" = 100 XP × items purchased)
+ * 3. Negative Quests: Reduce XP (e.g., "Gossip" = -200 XP, "Smoking" = -50 XP per cigarette)
+ * 
+ * AUTOMATIC SORTING ORDER:
+ * 1. Positive Quests: Legendary → Hard → Medium → Easy (top to bottom)
+ * 2. Negative Quests: Always appear at bottom regardless of difficulty
+ * 
+ * ADDING NEW QUESTS:
+ * - Just add anywhere in the quest array with proper difficulty/type labels
+ * - System automatically sorts to correct visual position
+ * - No manual positioning required!
+ */
 export interface Quest {
-  id: string;
-  title: string;
-  description: string;
-  titleHebrew?: string;
-  descriptionHebrew?: string;
-  xpReward: number;
-  difficulty: 'easy' | 'medium' | 'hard' | 'legendary';
-  icon: string;
-  completed: boolean;
-  seasonal?: boolean;
-  category?: 'daily' | 'weekly' | 'spiritual' | 'work';
-  type?: 'standard' | 'negative' | 'numeric';
-  isNegative?: boolean;
-  requiresInput?: boolean;
-  inputType?: 'count' | 'minutes';
+  // CORE PROPERTIES (required for all quests)
+  id: string;                    // Unique identifier
+  title: string;                 // English title
+  description: string;           // English description
+  titleHebrew?: string;          // Hebrew title (optional, RTL supported)
+  descriptionHebrew?: string;    // Hebrew description (optional, RTL supported)
+  xpReward: number;              // Base XP (positive or negative)
+  difficulty: 'easy' | 'medium' | 'hard' | 'legendary';  // AUTO-SORTS by this!
+  icon: string;                  // Emoji icon (e.g., '🏃', '📚', '🚬')
+  completed: boolean;            // Completion status
+  
+  // OPTIONAL PROPERTIES
+  seasonal?: boolean;            // Special holiday/seasonal quest badge
+  category?: 'daily' | 'weekly' | 'spiritual' | 'work';  // Quest categorization
+  
+  // QUEST TYPE SYSTEM (determines behavior)
+  type?: 'standard' | 'negative' | 'numeric';  // Quest behavior type
+  isNegative?: boolean;          // TRUE = quest appears at bottom, shows red colors
+  requiresInput?: boolean;       // TRUE = shows numeric input with +/- buttons
+  inputType?: 'count' | 'minutes';  // Type of numeric input (affects labels)
+  
+  /**
+   * QUEST TYPE EXAMPLES:
+   * 
+   * Standard Quest (default):
+   * { id: 'clean-room', xpReward: 250, difficulty: 'easy' }
+   * 
+   * Negative Quest (fixed penalty):
+   * { id: 'gossip', xpReward: -200, difficulty: 'easy', isNegative: true }
+   * 
+   * Numeric Quest (XP per unit):
+   * { 
+   *   id: 'buy-clothes', 
+   *   xpReward: 100,              // 100 XP per item
+   *   difficulty: 'medium', 
+   *   requiresInput: true, 
+   *   inputType: 'count' 
+   * }
+   * 
+   * Negative Numeric Quest (penalty per unit):
+   * { 
+   *   id: 'smoking', 
+   *   xpReward: -75,              // -75 XP per cigarette (updated from -50)
+   *   difficulty: 'easy', 
+   *   isNegative: true,
+   *   requiresInput: true,
+   *   inputType: 'count'
+   * }
+   * 
+   * Torah Reading (special case - infinite 20 XP/minute):
+   * { 
+   *   id: 'torah-reading-minutes', 
+   *   xpReward: 20,               // 20 XP per minute, no diminishing returns
+   *   difficulty: 'medium',
+   *   requiresInput: true,
+   *   inputType: 'minutes'
+   * }
+   */
 }
 
 interface QuestCardProps {

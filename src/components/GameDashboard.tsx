@@ -109,8 +109,134 @@ const GameDashboard = () => {
     }
   ]);
 
+  /**
+   * ==================================================================================
+   * 🎮 REAL LIFE MMORPG QUEST SYSTEM - COMPREHENSIVE DOCUMENTATION FOR FUTURE ME
+   * ==================================================================================
+   * 
+   * If you're reading this with no memory of this conversation, here's EVERYTHING you
+   * need to know about our sophisticated quest system:
+   * 
+   * ⚡ KEY BREAKTHROUGH: AUTOMATIC QUEST SORTING SYSTEM
+   * ===================================================
+   * We solved the problem of manual quest positioning! Now you can add quests 
+   * ANYWHERE in this array with proper labels, and they automatically appear 
+   * in the correct visual order. No more manual positioning required!
+   * 
+   * 📊 AUTOMATIC SORTING ORDER (see sortedQuests logic below):
+   * ==========================================================
+   * 1. POSITIVE QUESTS: Legendary (top) → Hard → Medium → Easy (bottom)
+   * 2. NEGATIVE QUESTS: Always at very bottom, BUT also sorted Legendary → Easy within negatives
+   * 
+   * 🎯 HOW TO ADD NEW QUESTS (SUPER SIMPLE):
+   * =======================================
+   * 1. Add quest object ANYWHERE in this array
+   * 2. Set difficulty: 'legendary' | 'hard' | 'medium' | 'easy'  
+   * 3. Set isNegative: true (if it's a penalty quest)
+   * 4. System automatically sorts to correct visual position!
+   * 
+   * 🌈 DIFFICULTY COLOR SYSTEM (applied automatically):
+   * ===================================================
+   * - Easy: Green (🟢 bg-green-500/30 text-green-700)
+   * - Medium: Yellow (🟡 bg-yellow-500/20 text-yellow-600)  
+   * - Hard: Orange (🟠 bg-orange-500/20 text-orange-600)
+   * - Legendary: Purple-Pink Gradient (🟣 from-purple-600 to-pink-600)
+   * 
+   * 🔢 QUEST TYPES & BEHAVIORS:
+   * ===========================
+   * 
+   * 1️⃣ STANDARD QUEST (default):
+   * {
+   *   id: 'clean-room',
+   *   title: 'Clean Your Room',
+   *   titleHebrew: 'נקה את החדר שלך',  // Hebrew is AS IMPORTANT as English!
+   *   xpReward: 250,                     // Fixed XP amount
+   *   difficulty: 'easy',               // 🚨 THIS DETERMINES VISUAL ORDER! 🚨
+   *   icon: '🧹',
+   *   completed: false,
+   *   category: 'daily'                 // Optional categorization
+   * }
+   * 
+   * 2️⃣ NUMERIC INPUT QUEST (XP per unit):
+   * {
+   *   id: 'buy-clothes',
+   *   title: 'Buy Clothes (Count)',
+   *   xpReward: 100,                     // 100 XP PER ITEM purchased
+   *   difficulty: 'medium',             // 🚨 AUTO-SORTS to medium section! 🚨
+   *   requiresInput: true,              // Shows +/- buttons with numeric input
+   *   inputType: 'count',               // 'count' or 'minutes' (affects UI labels)
+   *   type: 'numeric'
+   * }
+   * 
+   * 3️⃣ NEGATIVE QUEST (penalties):
+   * {
+   *   id: 'gossip',
+   *   title: 'Gossip',
+   *   titleHebrew: 'לשון הרע',
+   *   xpReward: -200,                    // NEGATIVE XP (red colors, "XP LOST!")
+   *   difficulty: 'easy',               // Still sorts by difficulty within negatives
+   *   isNegative: true,                 // 🚨 ALWAYS appears at bottom! 🚨
+   *   type: 'negative'
+   * }
+   * 
+   * 4️⃣ NEGATIVE NUMERIC QUEST (penalty per unit):
+   * {
+   *   id: 'smoking',
+   *   title: 'Smoking',
+   *   xpReward: -75,                     // -75 XP PER CIGARETTE
+   *   difficulty: 'easy',
+   *   isNegative: true,                 // Red colors, appears at bottom
+   *   requiresInput: true,              // Shows numeric input
+   *   inputType: 'count',
+   *   type: 'numeric'
+   * }
+   * 
+   * 🕐 SPECIAL CASE - TORAH READING:
+   * ================================
+   * Torah reading gives 20 XP per minute with NO diminishing returns (infinite rate).
+   * This is handled in QuestCard.tsx calculateBaseXP() function.
+   * 
+   * 🌍 HEBREW TRANSLATION REQUIREMENTS:
+   * ==================================
+   * Hebrew translations are AS IMPORTANT as English. Always provide:
+   * - titleHebrew: 'Hebrew title here'
+   * - descriptionHebrew: 'Hebrew description here'
+   * RTL (right-to-left) text is fully supported throughout the system.
+   * 
+   * 📱 NUMERIC INPUT SYSTEM FEATURES:
+   * =================================
+   * - Plus/Minus buttons with disabled states
+   * - Long-press acceleration (5→20 steps/second)
+   * - Manual text entry with validation  
+   * - Floor (0) and ceiling (999) limits
+   * - Hebrew RTL support
+   * - Touch/mobile support
+   * 
+   * 🔄 AUTOMATIC FEATURES THAT WORK FOR YOU:
+   * ========================================
+   * ✅ Quest sorting by difficulty (handled in sortedQuests below)
+   * ✅ Color coding by difficulty (handled in QuestCard.tsx)
+   * ✅ XP calculation with multipliers (handled in xpSystem.ts)
+   * ✅ Hebrew RTL text rendering (handled throughout UI)
+   * ✅ Achievement unlocking (handled in achievement system)
+   * ✅ Progress persistence (handled in localStorage)
+   * 
+   * 🚨 IMPORTANT FOR FUTURE CHANGES:
+   * ================================
+   * When you make major architectural changes (like we did with automatic sorting),
+   * ALWAYS document them here with:
+   * - What changed and why
+   * - How it affects quest addition process  
+   * - Any new properties or behaviors
+   * - Examples for future reference
+   * 
+   * This documentation ensures you can confidently modify the system even with
+   * zero memory of previous work!
+   * 
+   * ==================================================================================
+   */
   const [quests, setQuests] = useState<Quest[]>([
-    // LEGENDARY QUESTS - Highest Impact
+    // LEGENDARY QUESTS - Highest Impact (AUTO-SORTS TO TOP)
     {
       id: 'fix-broken',
       title: 'Fix Something Broken',
@@ -637,7 +763,7 @@ const GameDashboard = () => {
       titleHebrew: 'עישון',
       description: 'Enter number of cigarettes smoked - harms your body and mind',
       descriptionHebrew: 'הכנס מספר סיגריות שעישנת - פוגע בגוף ובנפש',
-      xpReward: -50,
+      xpReward: -75,
       difficulty: 'easy',
       icon: '🚬',
       completed: false,
@@ -677,29 +803,60 @@ const GameDashboard = () => {
     }
   ]);
 
-  // Automatically sort quests by difficulty and type for optimal display order
+  /**
+   * ========================================================================
+   * 🧠 AUTOMATIC QUEST SORTING SYSTEM - THE MAGIC HAPPENS HERE!
+   * ========================================================================
+   * 
+   * This is the breakthrough system that allows you to add quests ANYWHERE
+   * in the array above and have them automatically appear in perfect order.
+   * 
+   * 🎯 VISUAL RESULT (what user sees):
+   * ==================================
+   * [Legendary Positive] ← Highest priority, top of list
+   * [Hard Positive]
+   * [Medium Positive]  
+   * [Easy Positive]
+   * [Legendary Negative] ← Still high difficulty but at bottom section
+   * [Hard Negative]
+   * [Medium Negative]
+   * [Easy Negative] ← Lowest priority, bottom of list
+   * 
+   * 🔧 HOW IT WORKS:
+   * ================
+   * 1. First separates positive vs negative quests (isNegative: true)
+   * 2. Then sorts by difficulty within each group
+   * 3. Combines them with positives first, negatives last
+   * 
+   * 🚨 IF YOU MODIFY THIS LOGIC:
+   * ============================
+   * Remember to update the documentation above! Future you needs to know:
+   * - What the new sorting order is
+   * - How to add quests with the new system
+   * - Any new properties that affect sorting
+   */
   const sortedQuests = [...quests].sort((a, b) => {
-    // Define difficulty order: legendary (highest) → hard → medium → easy
+    // Define difficulty priority: legendary=4 (highest) down to easy=1 (lowest)
     const difficultyOrder = { 'legendary': 4, 'hard': 3, 'medium': 2, 'easy': 1 };
     
-    // Define type order: positive quests first, then negative quests last
+    // Separate positive quests (shown first) from negative quests (shown last)
     const getTypeOrder = (quest: Quest) => {
-      if (quest.isNegative) return 0; // Negative quests go last
-      return 1; // Positive quests go first
+      if (quest.isNegative) return 0; // Negative quests = lower priority (shown last)
+      return 1; // Positive quests = higher priority (shown first)
     };
     
-    // First sort by type (positive vs negative)
+    // STEP 1: Sort by quest type (positive vs negative)
     const typeA = getTypeOrder(a);
     const typeB = getTypeOrder(b);
     if (typeA !== typeB) {
-      return typeB - typeA; // Higher type order first (positive before negative)
+      return typeB - typeA; // Higher type number first (1 > 0, so positive before negative)
     }
     
-    // Within same type, sort by difficulty
+    // STEP 2: Within same type, sort by difficulty (legendary first, easy last)
     const diffA = difficultyOrder[a.difficulty];
     const diffB = difficultyOrder[b.difficulty];
     
-    return diffB - diffA; // Higher difficulty first
+    return diffB - diffA; // Higher difficulty number first (4 > 3 > 2 > 1)
   });
 
   const completedQuests = sortedQuests.filter(q => q.completed).length;
