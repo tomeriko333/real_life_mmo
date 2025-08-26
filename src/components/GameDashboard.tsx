@@ -308,18 +308,6 @@ const GameDashboard = () => {
       category: 'weekly'
     },
     {
-      id: 'no-gossip',
-      title: 'No Gossip',
-      titleHebrew: 'ללא לשון הרע',
-      description: 'All day without negative speech - guard your tongue',
-      descriptionHebrew: 'כל היום ללא דיבור שלילי - שמור על הלשון',
-      xpReward: 400,
-      difficulty: 'medium',
-      icon: '🗣️',
-      completed: false,
-      category: 'daily'
-    },
-    {
       id: 'help-neighbor',
       title: 'Help a Neighbor',
       titleHebrew: 'עזור לשכן',
@@ -596,6 +584,98 @@ const GameDashboard = () => {
       icon: '📱',
       completed: false,
       category: 'weekly'
+    },
+
+    // NEGATIVE XP MISSIONS
+    {
+      id: 'gossip',
+      title: 'Gossip',
+      titleHebrew: 'לשון הרע',
+      description: 'Negative speech about others - damages your spiritual progress',
+      descriptionHebrew: 'דיבור שלילי על אחרים - פוגע בהתקדמות הרוחנית',
+      xpReward: -200,
+      difficulty: 'easy',
+      icon: '🗣️',
+      completed: false,
+      category: 'daily',
+      type: 'negative',
+      isNegative: true
+    },
+    {
+      id: 'smoking',
+      title: 'Smoking',
+      titleHebrew: 'עישון',
+      description: 'Enter number of cigarettes smoked - harms your body and mind',
+      descriptionHebrew: 'הכנס מספר סיגריות שעישנת - פוגע בגוף ובנפש',
+      xpReward: -50,
+      difficulty: 'easy',
+      icon: '🚬',
+      completed: false,
+      category: 'daily',
+      type: 'numeric',
+      isNegative: true,
+      requiresInput: true,
+      inputType: 'count'
+    },
+    {
+      id: 'dirty-room',
+      title: 'Dirty Room',
+      titleHebrew: 'חדר מלוכלך',
+      description: 'Personal space left messy - affects your mental clarity',
+      descriptionHebrew: 'החלל האישי נותר מבולגן - משפיע על הבהירות המנטלית',
+      xpReward: -100,
+      difficulty: 'easy',
+      icon: '🛏️',
+      completed: false,
+      category: 'daily',
+      type: 'negative',
+      isNegative: true
+    },
+    {
+      id: 'dirty-house',
+      title: 'Dirty House',
+      titleHebrew: 'בית מלוכלך',
+      description: 'Living space left unclean - creates negative environment',
+      descriptionHebrew: 'חלל המגורים נותר לא נקי - יוצר סביבה שלילית',
+      xpReward: -300,
+      difficulty: 'medium',
+      icon: '🏠',
+      completed: false,
+      category: 'daily',
+      type: 'negative',
+      isNegative: true
+    },
+
+    // NUMERIC INPUT MISSIONS
+    {
+      id: 'buy-clothes',
+      title: 'Buy Clothes',
+      titleHebrew: 'קנה בגדים',
+      description: 'Enter number of clothing items purchased - refresh your style',
+      descriptionHebrew: 'הכנס מספר פריטי הלבשה שנרכשו - רענן את הסטיל',
+      xpReward: 100,
+      difficulty: 'medium',
+      icon: '👕',
+      completed: false,
+      category: 'weekly',
+      type: 'numeric',
+      requiresInput: true,
+      inputType: 'count'
+    },
+    {
+      id: 'torah-reading-minutes',
+      title: 'Torah Reading',
+      titleHebrew: 'לימוד תורה',
+      description: 'Enter minutes of Torah study - spiritual growth through learning',
+      descriptionHebrew: 'הכנס דקות לימוד תורה - צמיחה רוחנית באמצעות לימוד',
+      xpReward: 20,
+      difficulty: 'medium',
+      icon: '📖',
+      completed: false,
+      category: 'spiritual',
+      type: 'numeric',
+      requiresInput: true,
+      inputType: 'minutes'
     }
   ]);
 

@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import QuestTimer from "./QuestTimer";
+import NumericInput from "./NumericInput";
 import { type QuestActivity } from "../utils/timeSystem";
 import { XPCalculator } from "../utils/xpSystem";
 
@@ -19,6 +20,10 @@ export interface Quest {
   completed: boolean;
   seasonal?: boolean;
   category?: 'daily' | 'weekly' | 'spiritual' | 'work';
+  type?: 'standard' | 'negative' | 'numeric';
+  isNegative?: boolean;
+  requiresInput?: boolean;
+  inputType?: 'count' | 'minutes';
 }
 
 interface QuestCardProps {
@@ -36,6 +41,7 @@ interface QuestCardProps {
 const QuestCard = ({ quest, onComplete, isHebrew = false, endlessMode = false, activity, currentTime, streak = 0, categoriesCompletedToday = [], questsCompletedToday = 0 }: QuestCardProps) => {
   const [isCompleting, setIsCompleting] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [numericValue, setNumericValue] = useState(1);
   
   const translations = {
     english: {
@@ -71,8 +77,24 @@ const QuestCard = ({ quest, onComplete, isHebrew = false, endlessMode = false, a
   // Calculate final XP with all multipliers
   const consecutiveDays = activity?.consecutiveDays || 0;
   const isFirstQuestOfDay = questsCompletedToday === 0;
+  
+  // Calculate base XP for this quest
+  const calculateBaseXP = () => {
+    if (quest.type === 'numeric') {
+      if (quest.id === 'torah-reading-minutes') {
+        // Torah reading special rule: Same XP rate infinitely
+        return quest.xpReward * numericValue;
+      } else {
+        // Regular numeric quest (like buy clothes)
+        return quest.xpReward * numericValue;
+      }
+    }
+    return quest.xpReward; // Standard quest or negative quest
+  };
+
+  const baseXP = calculateBaseXP();
   const xpResult = XPCalculator.calculateFinalXP(
-    quest.xpReward,
+    baseXP,
     streak,
     categoriesCompletedToday,
     quest.difficulty,
@@ -93,8 +115,12 @@ const QuestCard = ({ quest, onComplete, isHebrew = false, endlessMode = false, a
     
     setIsCompleting(true);
     setTimeout(() => {
-      onComplete(quest.id, quest.xpReward);
+      onComplete(quest.id, baseXP);
       setIsCompleting(false);
+      // Reset numeric value after completion for negative quests
+      if (quest.isNegative && quest.requiresInput) {
+        setNumericValue(1);
+      }
     }, 600);
   };
 
@@ -155,10 +181,37 @@ const QuestCard = ({ quest, onComplete, isHebrew = false, endlessMode = false, a
           />
         </div>
       )}
+
+      {/* Numeric Input for quests that require it */}
+      {quest.requiresInput && (
+        <div className="mb-3 p-3 bg-muted/30 rounded-lg">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm font-medium">
+              {quest.inputType === 'count' ? 
+                (isHebrew ? 'כמות:' : 'Count:') : 
+                (isHebrew ? 'דקות:' : 'Minutes:')}
+            </span>
+            <span className="text-xs text-muted-foreground">
+              {quest.inputType === 'count' ? 
+                (isHebrew ? `${Math.abs(quest.xpReward)} נקודות לפריט` : `${Math.abs(quest.xpReward)} XP per item`) :
+                (isHebrew ? `${quest.xpReward} נקודות לדקה` : `${quest.xpReward} XP per minute`)}
+            </span>
+          </div>
+          <NumericInput
+            value={numericValue}
+            onChange={setNumericValue}
+            isHebrew={isHebrew}
+            min={quest.isNegative ? 1 : 0}
+            max={999}
+          />
+        </div>
+      )}
       
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-success font-bold">+{xpResult.finalXP} XP</span>
+          <span className={`font-bold ${baseXP >= 0 ? 'text-success' : 'text-destructive'}`}>
+            {baseXP >= 0 ? '+' : ''}{Math.round(baseXP)} XP
+          </span>
           {quest.completed && <span className="text-xs text-success">✓ {t.completed}</span>}
         </div>
         
@@ -174,10 +227,16 @@ const QuestCard = ({ quest, onComplete, isHebrew = false, endlessMode = false, a
       </div>
       
       {isCompleting && (
-        <div className="absolute inset-0 flex items-center justify-center bg-success/20 rounded-lg">
+        <div className={`absolute inset-0 flex items-center justify-center rounded-lg ${
+          baseXP >= 0 ? 'bg-success/20' : 'bg-destructive/20'
+        }`}>
           <div className="text-center animate-bounce-in">
-            <div className="text-3xl mb-1">+{xpResult.finalXP}</div>
-            <div className="text-success font-bold">{t.xpGained}</div>
+            <div className={`text-3xl mb-1 ${baseXP >= 0 ? 'text-success' : 'text-destructive'}`}>
+              {baseXP >= 0 ? '+' : ''}{Math.round(baseXP)}
+            </div>
+            <div className={`font-bold ${baseXP >= 0 ? 'text-success' : 'text-destructive'}`}>
+              {baseXP >= 0 ? t.xpGained : 'XP LOST!'}
+            </div>
           </div>
         </div>
       )}
