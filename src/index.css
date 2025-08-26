@@ -8,16 +8,16 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Game-inspired background */
-    --background: 230 35% 7%;
-    --foreground: 210 40% 98%;
+    /* Light mode - Traditional white background */
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
 
     /* Card system */
-    --card: 230 30% 12%;
-    --card-foreground: 210 40% 98%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
 
-    --popover: 230 30% 12%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
 
     /* Primary - Vibrant Blue */
     --primary: 214 88% 55%;
@@ -29,8 +29,8 @@ All colors MUST be HSL.
     --secondary-foreground: 0 0% 100%;
 
     /* Muted elements */
-    --muted: 230 25% 18%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215.4 16.3% 46.9%;
 
     /* Accent - Purple power */
     --accent: 270 91% 65%;
@@ -42,11 +42,11 @@ All colors MUST be HSL.
 
     /* Destructive - Red */
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 98%;
 
     /* UI Elements */
-    --border: 230 25% 18%;
-    --input: 230 25% 18%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
     --ring: 214 88% 55%;
 
     --radius: 1rem;
@@ -133,7 +133,35 @@ All colors MUST be HSL.
     @apply border-border;
   }
 
-  body {
-    @apply bg-background text-foreground;
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    @apply bg-background text-foreground transition-colors duration-300;
+  }
+
+  #root {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100vh;
+  }
+
+  /* Smooth transitions for theme switching */
+  * {
+    transition-property: color, background-color, border-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 200ms;
+  }
+
+  /* Dark mode specific improvements */
+  .dark {
+    color-scheme: dark;
+  }
+  
+  :root {
+    color-scheme: light;
   }
 }
