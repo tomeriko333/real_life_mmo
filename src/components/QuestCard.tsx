@@ -82,7 +82,7 @@ const QuestCard = ({ quest, onComplete, isHebrew = false, endlessMode = false, a
   );
   
   const difficultyColors = {
-    easy: 'bg-success/20 text-success border-success/30',
+    easy: 'bg-green-500/30 text-green-700 border-green-500/50',
     medium: 'bg-yellow-500/20 text-yellow-600 border-yellow-500/30',
     hard: 'bg-orange-500/20 text-orange-600 border-orange-500/30',
     legendary: 'bg-gradient-to-r from-purple-600 to-pink-600 text-white border-purple-500/50'
