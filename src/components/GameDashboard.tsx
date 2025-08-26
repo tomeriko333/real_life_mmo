@@ -677,8 +677,33 @@ const GameDashboard = () => {
     }
   ]);
 
-  const completedQuests = quests.filter(q => q.completed).length;
-  const totalQuests = quests.length;
+  // Automatically sort quests by difficulty and type for optimal display order
+  const sortedQuests = [...quests].sort((a, b) => {
+    // Define difficulty order: legendary (highest) → hard → medium → easy
+    const difficultyOrder = { 'legendary': 4, 'hard': 3, 'medium': 2, 'easy': 1 };
+    
+    // Define type order: positive quests first, then negative quests last
+    const getTypeOrder = (quest: Quest) => {
+      if (quest.isNegative) return 0; // Negative quests go last
+      return 1; // Positive quests go first
+    };
+    
+    // First sort by type (positive vs negative)
+    const typeA = getTypeOrder(a);
+    const typeB = getTypeOrder(b);
+    if (typeA !== typeB) {
+      return typeB - typeA; // Higher type order first (positive before negative)
+    }
+    
+    // Within same type, sort by difficulty
+    const diffA = difficultyOrder[a.difficulty];
+    const diffB = difficultyOrder[b.difficulty];
+    
+    return diffB - diffA; // Higher difficulty first
+  });
+
+  const completedQuests = sortedQuests.filter(q => q.completed).length;
+  const totalQuests = sortedQuests.length;
 
   const handleQuestComplete = (questId: string, baseXP: number) => {
     const quest = quests.find(q => q.id === questId);
@@ -1116,7 +1141,7 @@ const GameDashboard = () => {
           )}
 
           <div className="grid gap-4 md:grid-cols-2">
-            {quests.map((quest) => (
+            {sortedQuests.map((quest) => (
               <QuestCard
                 key={quest.id}
                 quest={quest}
