@@ -107,6 +107,7 @@ const QuestCard = ({ quest, onComplete, isHebrew = false, endlessMode = false, a
   const [isCompleting, setIsCompleting] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [numericValue, setNumericValue] = useState(1);
+  const [isRipping, setIsRipping] = useState(false);
   
   const translations = {
     english: {
@@ -175,26 +176,67 @@ const QuestCard = ({ quest, onComplete, isHebrew = false, endlessMode = false, a
     legendary: 'bg-gradient-to-r from-purple-600 to-pink-600 text-white border-purple-500/50'
   };
 
+  // Corner colors for difficulty indicators
+  const cornerColors = {
+    easy: 'bg-green-500',
+    medium: 'bg-yellow-500',
+    hard: 'bg-orange-500',
+    legendary: 'bg-gradient-to-br from-purple-600 to-pink-600'
+  };
+
+  // Check if quest should show corner (not completed or on cooldown)
+  const shouldShowCorner = !quest.completed || endlessMode;
+
   const handleComplete = () => {
     if (quest.completed && !endlessMode) return;
     
     setIsCompleting(true);
+    setIsRipping(true);
+    
+    // Stage 1: Rip animation (800ms)
     setTimeout(() => {
+      // Stage 2: Complete the quest and show XP gained (200ms)
       onComplete(quest.id, baseXP);
       setIsCompleting(false);
-      // Reset numeric value after completion for negative quests
-      if (quest.isNegative && quest.requiresInput) {
-        setNumericValue(1);
-      }
-    }, 600);
+      
+      // Stage 3: Reset rip animation and numeric values (500ms)
+      setTimeout(() => {
+        setIsRipping(false);
+        
+        // Reset numeric value after completion for negative quests
+        if (quest.isNegative && quest.requiresInput) {
+          setNumericValue(1);
+        }
+      }, 200);
+    }, 800);
   };
 
   return (
-    <Card className={`p-2 md:p-6 transition-all duration-300 ${
+    <Card className={`relative p-2 md:p-6 transition-all duration-300 overflow-hidden ${
       quest.completed 
         ? 'bg-muted/50 border-success/30' 
         : `bg-gradient-to-br from-card to-muted hover:shadow-lg hover:scale-105 border-primary/20 ${quest.seasonal ? 'border-accent/50 bg-gradient-to-br from-accent/5 to-primary/5' : ''}`
-    }`} dir={isHebrew ? 'rtl' : 'ltr'}>
+    } ${isRipping ? 'animate-pulse' : ''}`} dir={isHebrew ? 'rtl' : 'ltr'}>
+      
+      {/* Difficulty Corner Indicator */}
+      {shouldShowCorner && (
+        <div 
+          className={`absolute bottom-0 left-0 w-6 h-6 pointer-events-none z-0 transition-all duration-700 ${
+            isRipping ? 'scale-150 -translate-x-1 translate-y-1' : ''
+          }`}
+        >
+          <div
+            className={`w-full h-full ${cornerColors[quest.difficulty]} transition-all duration-700 ${
+              isRipping ? 'animate-bounce' : ''
+            }`}
+            style={{
+              clipPath: 'polygon(0 100%, 100% 100%, 0 0)',
+              transform: isRipping ? 'scale(2.5) rotate(180deg)' : 'scale(1)',
+              transformOrigin: 'bottom left',
+            }}
+          />
+        </div>
+      )}
       {/* Mobile Layout */}
       <div className="md:hidden">
         <div className="flex items-start justify-between mb-2">
