@@ -190,21 +190,23 @@ const QuestCard = ({ quest, onComplete, isHebrew = false, endlessMode = false, a
   };
 
   return (
-    <Card className={`p-2 md:p-4 transition-all duration-300 ${
+    <Card className={`p-2 md:p-6 transition-all duration-300 ${
       quest.completed 
         ? 'bg-muted/50 border-success/30' 
         : `bg-gradient-to-br from-card to-muted hover:shadow-lg hover:scale-105 border-primary/20 ${quest.seasonal ? 'border-accent/50 bg-gradient-to-br from-accent/5 to-primary/5' : ''}`
     }`} dir={isHebrew ? 'rtl' : 'ltr'}>
       {/* Mobile Layout */}
       <div className="md:hidden">
-        <div className="flex items-center justify-between mb-1">
-          <div className="flex items-center gap-2 min-w-0 flex-1">
+        <div className="flex items-start justify-between mb-2">
+          <div className="flex items-start gap-2 min-w-0 flex-1">
             <div className="text-lg flex-shrink-0">{quest.icon}</div>
-            <h3 className={`font-medium text-sm truncate ${quest.completed ? 'line-through text-muted-foreground' : 'text-foreground'}`}>
-              {isHebrew && quest.titleHebrew ? quest.titleHebrew : quest.title}
-            </h3>
+            <div className="min-w-0 flex-1">
+              <h3 className={`font-medium text-sm leading-tight ${quest.completed ? 'line-through text-muted-foreground' : 'text-foreground'}`}>
+                {isHebrew && quest.titleHebrew ? quest.titleHebrew : quest.title}
+              </h3>
+            </div>
           </div>
-          <Badge className={`text-xs px-1.5 py-0.5 ${difficultyColors[quest.difficulty]}`}>
+          <Badge className={`text-xs px-1.5 py-0.5 flex-shrink-0 ${difficultyColors[quest.difficulty]}`}>
             {t[quest.difficulty]}
           </Badge>
         </div>
@@ -237,44 +239,49 @@ const QuestCard = ({ quest, onComplete, isHebrew = false, endlessMode = false, a
 
       {/* Desktop Layout */}
       <div className="hidden md:block">
+        {/* Header with icon, title and badge */}
         <div className="flex items-start justify-between mb-3">
-          <div className="flex items-center gap-3">
-            <div className="text-2xl">{quest.icon}</div>
-            <div className="flex-1">
-              <div className="flex items-center gap-2">
-                <h3 className={`font-semibold ${quest.completed ? 'line-through text-muted-foreground' : 'text-foreground'}`}>
+          <div className="flex items-start gap-3 min-w-0 flex-1 pr-2">
+            <div className="text-2xl flex-shrink-0">{quest.icon}</div>
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center gap-2 mb-1">
+                <h3 className={`font-semibold text-base leading-tight break-words ${quest.completed ? 'line-through text-muted-foreground' : 'text-foreground'}`}>
                   {isHebrew && quest.titleHebrew ? quest.titleHebrew : quest.title}
                 </h3>
-                {quest.seasonal && <Badge className="text-xs bg-accent/20 text-accent">🎉 {t.holiday}</Badge>}
+                {quest.seasonal && <Badge className="text-xs bg-accent/20 text-accent flex-shrink-0">🎉 {t.holiday}</Badge>}
               </div>
-              <p className={`text-sm text-muted-foreground ${!isExpanded ? 'line-clamp-2' : ''}`}>
-                {isHebrew && quest.descriptionHebrew ? quest.descriptionHebrew : quest.description}
-              </p>
-              {quest.description.length > 50 && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setIsExpanded(!isExpanded)}
-                  className="mt-1 h-6 px-2 text-xs"
-                >
-                  {isExpanded ? (
-                    <>
-                      <ChevronUp className="h-3 w-3 mr-1" />
-                      {t.less}
-                    </>
-                  ) : (
-                    <>
-                      <ChevronDown className="h-3 w-3 mr-1" />
-                      {t.more}
-                    </>
-                  )}
-                </Button>
-              )}
             </div>
           </div>
-          <Badge className={difficultyColors[quest.difficulty]}>
+          <Badge className={`text-xs px-2 py-1 flex-shrink-0 ${difficultyColors[quest.difficulty]}`}>
             {t[quest.difficulty]}
           </Badge>
+        </div>
+        
+        {/* Description */}
+        <div className="mb-3 pl-11">
+          <p className={`text-sm text-muted-foreground leading-relaxed ${!isExpanded ? 'line-clamp-2' : ''}`}>
+            {isHebrew && quest.descriptionHebrew ? quest.descriptionHebrew : quest.description}
+          </p>
+          {quest.description.length > 50 && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsExpanded(!isExpanded)}
+              className="mt-2 h-6 px-2 text-xs"
+            >
+              {isExpanded ? (
+                <>
+                  <ChevronUp className="h-3 w-3 mr-1" />
+                  {t.less}
+                </>
+              ) : (
+                <>
+                  <ChevronDown className="h-3 w-3 mr-1" />
+                  {t.more}
+                </>
+              )}
+            </Button>
+          )}
         </div>
       </div>
       

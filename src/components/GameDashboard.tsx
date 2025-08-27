@@ -1273,7 +1273,7 @@ const GameDashboard = ({ playerData, isHebrew: propIsHebrew = false, onBackToMen
               <Award className="h-5 w-5" />
               {t.achievements}
             </h2>
-            <div className="grid gap-3 grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
+            <div className="grid gap-3 grid-cols-2 md:grid-cols-4">
               {achievements.map((achievement) => (
                 <AchievementBadge
                   key={achievement.id}
@@ -1293,7 +1293,7 @@ const GameDashboard = ({ playerData, isHebrew: propIsHebrew = false, onBackToMen
           {seasonalQuests.length > 0 && (
             <div className="mb-6">
               <h3 className="text-lg font-semibold mb-3 text-accent" dir={isHebrew ? 'rtl' : 'ltr'}>🎉 {t.seasonalEvents}</h3>
-              <div className="grid gap-4 grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
+              <div className="grid gap-4 grid-cols-2 md:grid-cols-4">
                 {seasonalQuests.map((quest) => (
                   <QuestCard
                     key={quest.id}
@@ -1312,7 +1312,7 @@ const GameDashboard = ({ playerData, isHebrew: propIsHebrew = false, onBackToMen
             </div>
           )}
 
-          <div className="grid gap-4 grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
+          <div className="grid gap-4 grid-cols-2 md:grid-cols-4">
             {sortedQuests.map((quest) => (
               <QuestCard
                 key={quest.id}
