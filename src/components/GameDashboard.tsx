@@ -9,11 +9,18 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Moon, Sun, Globe, Award } from "lucide-react";
+import PersistentXPBar from "./PersistentXPBar";
 import { XPCalculator, type QuestCompletion } from "../utils/xpSystem";
 import { LevelingSystem } from "../utils/levelingSystem";
 import { TimeSystem, type QuestActivity } from "../utils/timeSystem";
 
-const GameDashboard = () => {
+interface GameDashboardProps {
+  playerData: { name: string; gender: string } | null;
+  isHebrew?: boolean;
+  onBackToMenu?: () => void;
+}
+
+const GameDashboard = ({ playerData, isHebrew: propIsHebrew = false, onBackToMenu }: GameDashboardProps) => {
   const [playerXP, setPlayerXP] = useState(0);
   const [playerLevel, setPlayerLevel] = useState(1);
   const [streak, setStreak] = useState(0);
@@ -35,7 +42,7 @@ const GameDashboard = () => {
   });
   const [isHebrew, setIsHebrew] = useState(() => {
     const saved = localStorage.getItem('isHebrew');
-    return saved ? JSON.parse(saved) : false;
+    return propIsHebrew || (saved ? JSON.parse(saved) : false);
   });
   const [showAchievements, setShowAchievements] = useState(false);
   const [levelUpModal, setLevelUpModal] = useState<{ show: boolean; level: number }>({ show: false, level: 1 });
@@ -1161,6 +1168,18 @@ const GameDashboard = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted p-4 space-y-6">
+      {/* Persistent XP Bar - Always visible at top-left */}
+      {playerData && (
+        <PersistentXPBar
+          playerName={playerData.name}
+          playerGender={playerData.gender}
+          currentXP={playerXP}
+          currentLevel={playerLevel}
+          isHebrew={isHebrew}
+        />
+      )}
+      
+      <div className="pt-20">
       <div className="max-w-4xl mx-auto">
         {/* Header with Controls */}
         <div className="text-center mb-8">
@@ -1258,7 +1277,7 @@ const GameDashboard = () => {
               <Award className="h-5 w-5" />
               {t.achievements}
             </h2>
-            <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-3 grid-cols-2 md:grid-cols-4">
               {achievements.map((achievement) => (
                 <AchievementBadge
                   key={achievement.id}
@@ -1278,7 +1297,7 @@ const GameDashboard = () => {
           {seasonalQuests.length > 0 && (
             <div className="mb-6">
               <h3 className="text-lg font-semibold mb-3 text-accent" dir={isHebrew ? 'rtl' : 'ltr'}>🎉 {t.seasonalEvents}</h3>
-              <div className="grid gap-4 md:grid-cols-2">
+              <div className="grid gap-4 grid-cols-2 md:grid-cols-4">
                 {seasonalQuests.map((quest) => (
                   <QuestCard
                     key={quest.id}
@@ -1297,7 +1316,7 @@ const GameDashboard = () => {
             </div>
           )}
 
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="grid gap-4 grid-cols-2 md:grid-cols-4">
             {sortedQuests.map((quest) => (
               <QuestCard
                 key={quest.id}
@@ -1385,6 +1404,7 @@ const GameDashboard = () => {
         onToggleEndlessMode={handleToggleEndlessMode}
         isHebrew={isHebrew}
       />
+      </div>
     </div>
   );
 };
