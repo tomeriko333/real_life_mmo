@@ -25,8 +25,6 @@ const CharacterCreation = ({ onComplete, isHebrew = false }: CharacterCreationPr
       genderLabel: "Gender",
       male: "Male",
       female: "Female",
-      nonBinary: "Non-Binary",
-      prefer: "Prefer not to say",
       startJourney: "Start My Journey",
       creating: "Creating Character...",
       nameRequired: "Please enter your name",
@@ -42,9 +40,7 @@ const CharacterCreation = ({ onComplete, isHebrew = false }: CharacterCreationPr
       namePlaceholder: "הכנס את השם שלך...",
       genderLabel: "מגדר",
       male: "זכר",
-      female: "נקבה", 
-      nonBinary: "נון-בינארי",
-      prefer: "מעדיף לא לומר",
+      female: "נקבה",
       startJourney: "התחל את המסע שלי",
       creating: "יוצר דמות...",
       nameRequired: "אנא הכנס את שמך",
@@ -77,9 +73,7 @@ const CharacterCreation = ({ onComplete, isHebrew = false }: CharacterCreationPr
 
   const genderOptions = [
     { value: "male", label: t.male, emoji: "🧑" },
-    { value: "female", label: t.female, emoji: "👩" },
-    { value: "non-binary", label: t.nonBinary, emoji: "🧑‍🎤" },
-    { value: "prefer-not-to-say", label: t.prefer, emoji: "❓" }
+    { value: "female", label: t.female, emoji: "👩" }
   ];
 
   return (

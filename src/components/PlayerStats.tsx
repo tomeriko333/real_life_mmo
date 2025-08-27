@@ -107,9 +107,6 @@ const PlayerStats = ({ currentXP, currentLevel, onLevelUp, isHebrew = false }: P
             <p className="text-muted-foreground font-medium">{currentTitle.title}</p>
           </div>
         </div>
-        <div className={`text-4xl font-bold text-success ${isLevelingUp ? 'animate-level-up' : ''}`}>
-          {currentXP.toLocaleString()} XP
-        </div>
       </div>
       
       <div className="space-y-2">
