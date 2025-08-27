@@ -44,6 +44,7 @@ const GameDashboard = ({ playerData, isHebrew: propIsHebrew = false, onBackToMen
   });
   // Use propIsHebrew directly instead of local state
   const isHebrew = propIsHebrew;
+  const [levelUpModal, setLevelUpModal] = useState<{ show: boolean; level: number }>({ show: false, level: 1 });
   const [showAchievements, setShowAchievements] = useState(false);
   const [achievements, setAchievements] = useState([
     {
@@ -936,6 +937,7 @@ const GameDashboard = ({ playerData, isHebrew: propIsHebrew = false, onBackToMen
 
   const handleLevelUp = (newLevel: number) => {
     setPlayerLevel(newLevel);
+    setLevelUpModal({ show: true, level: newLevel });
   };
 
   const resetDaily = () => {
@@ -1337,6 +1339,31 @@ const GameDashboard = ({ playerData, isHebrew: propIsHebrew = false, onBackToMen
         </Card>
       </div>
 
+      {/* Level Up Modal with blurred background */}
+      {levelUpModal.show && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-md"
+          onClick={() => setLevelUpModal({ show: false, level: 1 })}
+        >
+          <div className="text-center animate-bounce-in">
+            {/* Main level up message in rounded container */}
+            <div className="bg-card/95 backdrop-blur-sm border-2 border-success/50 rounded-2xl px-8 py-6 mb-6 shadow-2xl">
+              <div className="text-6xl mb-4">🚀</div>
+              <div className="text-3xl font-bold text-success mb-2">{t.levelUp}</div>
+              <div className="text-xl text-foreground">
+                {t.congratulations} {levelUpModal.level}!
+              </div>
+            </div>
+            
+            {/* Continue button in separate rounded container */}
+            <div className="bg-muted/80 backdrop-blur-sm rounded-full px-6 py-3 animate-pulse">
+              <div className="text-sm text-foreground font-medium">
+                Tap to continue
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Developer Panel */}
       <DeveloperPanel

@@ -17,7 +17,6 @@ const PlayerStats = ({ currentXP, currentLevel, onLevelUp, isHebrew = false }: P
   useEffect(() => {
     setDisplayLevel(currentLevel);
   }, [currentLevel]);
-  const [isLevelingUp, setIsLevelingUp] = useState(false);
   
   // Use the new advanced leveling system
   const levelInfo = LevelingSystem.getLevelInfo(currentXP);
@@ -88,12 +87,8 @@ const PlayerStats = ({ currentXP, currentLevel, onLevelUp, isHebrew = false }: P
     const targetLevel = levelInfo.currentLevel;
     
     if (targetLevel > displayLevel) {
-      setIsLevelingUp(true);
-      setTimeout(() => {
-        setDisplayLevel(targetLevel);
-        onLevelUp?.(targetLevel);
-        setTimeout(() => setIsLevelingUp(false), 800);
-      }, 300);
+      setDisplayLevel(targetLevel);
+      onLevelUp?.(targetLevel);
     }
   }, [currentXP, displayLevel, onLevelUp, levelInfo.currentLevel]);
 
@@ -127,15 +122,6 @@ const PlayerStats = ({ currentXP, currentLevel, onLevelUp, isHebrew = false }: P
         </div>
       </div>
       
-      {isLevelingUp && (
-        <div className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-lg animate-bounce-in">
-          <div className="text-center">
-            <div className="text-6xl mb-2">🎉</div>
-            <div className="text-2xl font-bold text-success">{t.levelUp}</div>
-            <div className="text-lg text-foreground">{t.level} {displayLevel}</div>
-          </div>
-        </div>
-      )}
     </Card>
   );
 };
