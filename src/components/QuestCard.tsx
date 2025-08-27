@@ -190,49 +190,92 @@ const QuestCard = ({ quest, onComplete, isHebrew = false, endlessMode = false, a
   };
 
   return (
-    <Card className={`p-4 transition-all duration-300 ${
+    <Card className={`p-2 md:p-4 transition-all duration-300 ${
       quest.completed 
         ? 'bg-muted/50 border-success/30' 
         : `bg-gradient-to-br from-card to-muted hover:shadow-lg hover:scale-105 border-primary/20 ${quest.seasonal ? 'border-accent/50 bg-gradient-to-br from-accent/5 to-primary/5' : ''}`
     }`} dir={isHebrew ? 'rtl' : 'ltr'}>
-      <div className="flex items-start justify-between mb-3">
-        <div className="flex items-center gap-3">
-          <div className="text-2xl">{quest.icon}</div>
-          <div className="flex-1">
-            <div className="flex items-center gap-2">
-              <h3 className={`font-semibold ${quest.completed ? 'line-through text-muted-foreground' : 'text-foreground'}`}>
-                {isHebrew && quest.titleHebrew ? quest.titleHebrew : quest.title}
-              </h3>
-              {quest.seasonal && <Badge className="text-xs bg-accent/20 text-accent">🎉 {t.holiday}</Badge>}
-            </div>
-            <p className={`text-sm text-muted-foreground ${!isExpanded ? 'line-clamp-2' : ''}`}>
-              {isHebrew && quest.descriptionHebrew ? quest.descriptionHebrew : quest.description}
-            </p>
-            {quest.description.length > 50 && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsExpanded(!isExpanded)}
-                className="mt-1 h-6 px-2 text-xs"
-              >
-                {isExpanded ? (
-                  <>
-                    <ChevronUp className="h-3 w-3 mr-1" />
-                    {t.less}
-                  </>
-                ) : (
-                  <>
-                    <ChevronDown className="h-3 w-3 mr-1" />
-                    {t.more}
-                  </>
-                )}
-              </Button>
-            )}
+      {/* Mobile Layout */}
+      <div className="md:hidden">
+        <div className="flex items-center justify-between mb-1">
+          <div className="flex items-center gap-2 min-w-0 flex-1">
+            <div className="text-lg flex-shrink-0">{quest.icon}</div>
+            <h3 className={`font-medium text-sm truncate ${quest.completed ? 'line-through text-muted-foreground' : 'text-foreground'}`}>
+              {isHebrew && quest.titleHebrew ? quest.titleHebrew : quest.title}
+            </h3>
           </div>
+          <Badge className={`text-xs px-1.5 py-0.5 ${difficultyColors[quest.difficulty]}`}>
+            {t[quest.difficulty]}
+          </Badge>
         </div>
-        <Badge className={difficultyColors[quest.difficulty]}>
-          {t[quest.difficulty]}
-        </Badge>
+        {isExpanded && (
+          <p className="text-xs text-muted-foreground mb-2 pl-7">
+            {isHebrew && quest.descriptionHebrew ? quest.descriptionHebrew : quest.description}
+          </p>
+        )}
+        <div className="flex justify-center">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="h-6 px-2 text-xs"
+          >
+            {isExpanded ? (
+              <>
+                <ChevronUp className="h-3 w-3 mr-1" />
+                {t.less}
+              </>
+            ) : (
+              <>
+                <ChevronDown className="h-3 w-3 mr-1" />
+                {t.more}
+              </>
+            )}
+          </Button>
+        </div>
+      </div>
+
+      {/* Desktop Layout */}
+      <div className="hidden md:block">
+        <div className="flex items-start justify-between mb-3">
+          <div className="flex items-center gap-3">
+            <div className="text-2xl">{quest.icon}</div>
+            <div className="flex-1">
+              <div className="flex items-center gap-2">
+                <h3 className={`font-semibold ${quest.completed ? 'line-through text-muted-foreground' : 'text-foreground'}`}>
+                  {isHebrew && quest.titleHebrew ? quest.titleHebrew : quest.title}
+                </h3>
+                {quest.seasonal && <Badge className="text-xs bg-accent/20 text-accent">🎉 {t.holiday}</Badge>}
+              </div>
+              <p className={`text-sm text-muted-foreground ${!isExpanded ? 'line-clamp-2' : ''}`}>
+                {isHebrew && quest.descriptionHebrew ? quest.descriptionHebrew : quest.description}
+              </p>
+              {quest.description.length > 50 && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setIsExpanded(!isExpanded)}
+                  className="mt-1 h-6 px-2 text-xs"
+                >
+                  {isExpanded ? (
+                    <>
+                      <ChevronUp className="h-3 w-3 mr-1" />
+                      {t.less}
+                    </>
+                  ) : (
+                    <>
+                      <ChevronDown className="h-3 w-3 mr-1" />
+                      {t.more}
+                    </>
+                  )}
+                </Button>
+              )}
+            </div>
+          </div>
+          <Badge className={difficultyColors[quest.difficulty]}>
+            {t[quest.difficulty]}
+          </Badge>
+        </div>
       </div>
       
       {/* Quest Timer and Consistency Info */}
@@ -249,9 +292,9 @@ const QuestCard = ({ quest, onComplete, isHebrew = false, endlessMode = false, a
 
       {/* Numeric Input for quests that require it */}
       {quest.requiresInput && (
-        <div className="mb-3 p-3 bg-muted/30 rounded-lg">
+        <div className="mb-2 md:mb-3 p-2 md:p-3 bg-muted/30 rounded-lg">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium">
+            <span className="text-xs md:text-sm font-medium">
               {quest.inputType === 'count' ? 
                 (isHebrew ? 'כמות:' : 'Count:') : 
                 (isHebrew ? 'דקות:' : 'Minutes:')}

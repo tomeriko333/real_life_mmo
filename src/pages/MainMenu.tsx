@@ -1,27 +1,24 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Play, Settings, Trophy } from "lucide-react";
+import { Play, Trophy } from "lucide-react";
 
 interface MainMenuProps {
   onPlay: () => void;
-  onSettings: () => void;
   isHebrew?: boolean;
 }
 
-const MainMenu = ({ onPlay, onSettings, isHebrew = false }: MainMenuProps) => {
+const MainMenu = ({ onPlay, isHebrew = false }: MainMenuProps) => {
   const translations = {
     english: {
       title: "Real Life MMORPG",
       subtitle: "Level Up Your Life",
       play: "Play",
-      settings: "Settings",
       tagline: "Transform your daily life into an epic adventure"
     },
     hebrew: {
       title: "MMORPG בחיים האמיתיים",
       subtitle: "העלה רמה בחיים שלך",
       play: "שחק",
-      settings: "הגדרות",
       tagline: "הפוך את החיים היומיומיים שלך להרפתקה אפית"
     }
   };
@@ -60,15 +57,6 @@ const MainMenu = ({ onPlay, onSettings, isHebrew = false }: MainMenuProps) => {
           >
             <Play className={`w-5 h-5 ${isHebrew ? 'ml-2' : 'mr-2'}`} />
             {t.play}
-          </Button>
-          
-          <Button 
-            onClick={onSettings}
-            variant="outline"
-            className="w-full h-12 text-lg border-primary/20 hover:bg-primary/10"
-          >
-            <Settings className={`w-5 h-5 ${isHebrew ? 'ml-2' : 'mr-2'}`} />
-            {t.settings}
           </Button>
         </div>
 

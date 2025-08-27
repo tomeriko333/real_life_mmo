@@ -18,9 +18,11 @@ interface GameDashboardProps {
   playerData: { name: string; gender: string } | null;
   isHebrew?: boolean;
   onBackToMenu?: () => void;
+  onLanguageChange?: (isHebrew: boolean) => void;
+  onDarkModeChange?: (darkMode: boolean) => void;
 }
 
-const GameDashboard = ({ playerData, isHebrew: propIsHebrew = false, onBackToMenu }: GameDashboardProps) => {
+const GameDashboard = ({ playerData, isHebrew: propIsHebrew = false, onBackToMenu, onLanguageChange, onDarkModeChange }: GameDashboardProps) => {
   const [playerXP, setPlayerXP] = useState(0);
   const [playerLevel, setPlayerLevel] = useState(1);
   const [streak, setStreak] = useState(0);
@@ -40,10 +42,8 @@ const GameDashboard = ({ playerData, isHebrew: propIsHebrew = false, onBackToMen
     }
     return window.matchMedia('(prefers-color-scheme: dark)').matches;
   });
-  const [isHebrew, setIsHebrew] = useState(() => {
-    const saved = localStorage.getItem('isHebrew');
-    return propIsHebrew || (saved ? JSON.parse(saved) : false);
-  });
+  // Use propIsHebrew directly instead of local state
+  const isHebrew = propIsHebrew;
   const [showAchievements, setShowAchievements] = useState(false);
   const [levelUpModal, setLevelUpModal] = useState<{ show: boolean; level: number }>({ show: false, level: 1 });
   const [achievements, setAchievements] = useState([
@@ -1030,10 +1030,6 @@ const GameDashboard = ({ playerData, isHebrew: propIsHebrew = false, onBackToMen
     localStorage.setItem('darkMode', JSON.stringify(darkMode));
   }, [darkMode]);
   
-  useEffect(() => {
-    // Save Hebrew preference to localStorage
-    localStorage.setItem('isHebrew', JSON.stringify(isHebrew));
-  }, [isHebrew]);
 
   // Update current time every second for timer display
   useEffect(() => {
@@ -1180,7 +1176,7 @@ const GameDashboard = ({ playerData, isHebrew: propIsHebrew = false, onBackToMen
       )}
       
       <div className="pt-20">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-7xl mx-auto">
         {/* Header with Controls */}
         <div className="text-center mb-8">
           <div className="flex justify-between items-center mb-4">
@@ -1189,7 +1185,7 @@ const GameDashboard = ({ playerData, isHebrew: propIsHebrew = false, onBackToMen
                 <Globe className="h-4 w-4" />
                 <Switch
                   checked={isHebrew}
-                  onCheckedChange={setIsHebrew}
+                  onCheckedChange={onLanguageChange}
                 />
                 <span className="text-sm">{isHebrew ? "עב" : "EN"}</span>
               </div>
@@ -1197,7 +1193,7 @@ const GameDashboard = ({ playerData, isHebrew: propIsHebrew = false, onBackToMen
                 <Sun className="h-4 w-4" />
                 <Switch
                   checked={darkMode}
-                  onCheckedChange={setDarkMode}
+                  onCheckedChange={onDarkModeChange}
                 />
                 <Moon className="h-4 w-4" />
               </div>
@@ -1277,7 +1273,7 @@ const GameDashboard = ({ playerData, isHebrew: propIsHebrew = false, onBackToMen
               <Award className="h-5 w-5" />
               {t.achievements}
             </h2>
-            <div className="grid gap-3 grid-cols-2 md:grid-cols-4">
+            <div className="grid gap-3 grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
               {achievements.map((achievement) => (
                 <AchievementBadge
                   key={achievement.id}
@@ -1297,7 +1293,7 @@ const GameDashboard = ({ playerData, isHebrew: propIsHebrew = false, onBackToMen
           {seasonalQuests.length > 0 && (
             <div className="mb-6">
               <h3 className="text-lg font-semibold mb-3 text-accent" dir={isHebrew ? 'rtl' : 'ltr'}>🎉 {t.seasonalEvents}</h3>
-              <div className="grid gap-4 grid-cols-2 md:grid-cols-4">
+              <div className="grid gap-4 grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
                 {seasonalQuests.map((quest) => (
                   <QuestCard
                     key={quest.id}
@@ -1316,7 +1312,7 @@ const GameDashboard = ({ playerData, isHebrew: propIsHebrew = false, onBackToMen
             </div>
           )}
 
-          <div className="grid gap-4 grid-cols-2 md:grid-cols-4">
+          <div className="grid gap-4 grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
             {sortedQuests.map((quest) => (
               <QuestCard
                 key={quest.id}

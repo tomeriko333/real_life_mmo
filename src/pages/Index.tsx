@@ -88,7 +88,6 @@ const Index = () => {
     return (
       <MainMenu 
         onPlay={handlePlay}
-        onSettings={handleSettings}
         isHebrew={isHebrew}
       />
     );
@@ -109,6 +108,8 @@ const Index = () => {
         playerData={playerData}
         isHebrew={isHebrew}
         onBackToMenu={handleBackToMenu}
+        onLanguageChange={handleLanguageChange}
+        onDarkModeChange={handleDarkModeChange}
       />
       <Settings
         isOpen={showSettings}
