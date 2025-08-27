@@ -50,9 +50,9 @@ const NumericInput = ({
       const accelerate = () => {
         if (!isPressed.current) return;
 
-        // Perform the operation
+        // Perform the operation using functional update
         const increment = op === 'plus' ? step : -step;
-        updateValue(value + increment);
+        onChange(prevValue => clampValue(prevValue + increment));
 
         // Increase speed gradually up to 20 steps per second
         if (currentSpeed.current < 20) {
@@ -66,7 +66,7 @@ const NumericInput = ({
 
       accelerate();
     }, 500); // 500ms initial delay
-  }, [value, step, updateValue]);
+  }, [step, onChange, clampValue]);
 
   const stopLongPress = useCallback(() => {
     isPressed.current = false;

@@ -184,22 +184,25 @@ const QuestCard = ({ quest, onComplete, isHebrew = false, endlessMode = false, a
     legendary: 'bg-gradient-to-br from-purple-600 to-pink-600'
   };
 
+  // Quests with requiresInput (like Torah reading, buying clothes) should have no cooldown
+  const isEndless = endlessMode || quest.requiresInput;
+  
   // Check if quest should show corner (not completed or on cooldown)
-  const shouldShowCorner = !quest.completed || endlessMode;
+  const shouldShowCorner = !quest.completed || isEndless;
 
   const handleComplete = () => {
-    if (quest.completed && !endlessMode) return;
+    if (quest.completed && !isEndless) return;
     
     setIsCompleting(true);
     setIsRipping(true);
     
-    // Stage 1: Rip animation (800ms)
+    // Stage 1: Rip animation (1200ms) 
     setTimeout(() => {
-      // Stage 2: Complete the quest and show XP gained (200ms)
+      // Stage 2: Complete the quest and show XP gained
       onComplete(quest.id, baseXP);
       setIsCompleting(false);
       
-      // Stage 3: Reset rip animation and numeric values (500ms)
+      // Stage 3: Reset rip animation after fade out
       setTimeout(() => {
         setIsRipping(false);
         
@@ -207,8 +210,8 @@ const QuestCard = ({ quest, onComplete, isHebrew = false, endlessMode = false, a
         if (quest.isNegative && quest.requiresInput) {
           setNumericValue(1);
         }
-      }, 200);
-    }, 800);
+      }, 300);
+    }, 1200);
   };
 
   return (
@@ -216,23 +219,23 @@ const QuestCard = ({ quest, onComplete, isHebrew = false, endlessMode = false, a
       quest.completed 
         ? 'bg-muted/50 border-success/30' 
         : `bg-gradient-to-br from-card to-muted hover:shadow-lg hover:scale-105 border-primary/20 ${quest.seasonal ? 'border-accent/50 bg-gradient-to-br from-accent/5 to-primary/5' : ''}`
-    } ${isRipping ? 'animate-pulse' : ''}`} dir={isHebrew ? 'rtl' : 'ltr'}>
+    }`} dir={isHebrew ? 'rtl' : 'ltr'}>
       
       {/* Difficulty Corner Indicator */}
       {shouldShowCorner && (
         <div 
-          className={`absolute bottom-0 left-0 w-6 h-6 pointer-events-none z-0 transition-all duration-700 ${
-            isRipping ? 'scale-150 -translate-x-1 translate-y-1' : ''
-          }`}
+          className={`absolute bottom-0 left-0 w-6 h-6 pointer-events-none z-0`}
+          style={{
+            transition: 'all 0.8s ease-out',
+            transform: isRipping ? 'scale(3) translate(-20px, 20px) rotate(180deg)' : 'scale(1)',
+            opacity: isRipping ? 0 : 1,
+            transformOrigin: 'bottom left',
+          }}
         >
           <div
-            className={`w-full h-full ${cornerColors[quest.difficulty]} transition-all duration-700 ${
-              isRipping ? 'animate-bounce' : ''
-            }`}
+            className={`w-full h-full ${cornerColors[quest.difficulty]}`}
             style={{
               clipPath: 'polygon(0 100%, 100% 100%, 0 0)',
-              transform: isRipping ? 'scale(2.5) rotate(180deg)' : 'scale(1)',
-              transformOrigin: 'bottom left',
             }}
           />
         </div>
@@ -372,7 +375,7 @@ const QuestCard = ({ quest, onComplete, isHebrew = false, endlessMode = false, a
           {quest.completed && <span className="text-xs text-success">✓ {t.completed}</span>}
         </div>
         
-        {(!quest.completed || endlessMode) && (
+        {(!quest.completed || isEndless) && (
           <Button 
             onClick={handleComplete}
             disabled={isCompleting}

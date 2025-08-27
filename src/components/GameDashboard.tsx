@@ -45,7 +45,6 @@ const GameDashboard = ({ playerData, isHebrew: propIsHebrew = false, onBackToMen
   // Use propIsHebrew directly instead of local state
   const isHebrew = propIsHebrew;
   const [showAchievements, setShowAchievements] = useState(false);
-  const [levelUpModal, setLevelUpModal] = useState<{ show: boolean; level: number }>({ show: false, level: 1 });
   const [achievements, setAchievements] = useState([
     {
       id: 'first-quest',
@@ -937,7 +936,6 @@ const GameDashboard = ({ playerData, isHebrew: propIsHebrew = false, onBackToMen
 
   const handleLevelUp = (newLevel: number) => {
     setPlayerLevel(newLevel);
-    setLevelUpModal({ show: true, level: newLevel });
   };
 
   const resetDaily = () => {
@@ -1339,49 +1337,6 @@ const GameDashboard = ({ playerData, isHebrew: propIsHebrew = false, onBackToMen
         </Card>
       </div>
 
-      {/* Custom Level Up Modal */}
-      {levelUpModal.show && (
-        <div 
-          className="fixed z-[9999] flex items-center justify-center bg-black/50 backdrop-blur-sm"
-          onClick={() => setLevelUpModal({ show: false, level: 1 })}
-          style={{ 
-            position: 'fixed',
-            top: '-10px',
-            left: '-10px',
-            right: '-10px',
-            bottom: '-10px',
-            width: 'calc(100vw + 20px)',
-            height: 'calc(100vh + 20px)',
-            minHeight: 'calc(100vh + 20px)',
-            minWidth: 'calc(100vw + 20px)',
-            maxHeight: 'calc(100vh + 20px)',
-            maxWidth: 'calc(100vw + 20px)',
-            margin: '0',
-            padding: '0',
-            border: 'none',
-            outline: 'none',
-            transform: 'translateZ(0)',
-            willChange: 'transform',
-            contain: 'layout style paint size',
-            isolation: 'isolate'
-          }}
-        >
-          <div className="relative">
-            {/* Main Level Up Message */}
-            <div className="bg-black/90 border border-success/50 rounded-lg px-6 py-4 text-center animate-bounce-in">
-              <div className="text-3xl font-bold text-success mb-2">🚀 {t.levelUp}</div>
-              <div className="text-xl text-foreground">
-                {t.congratulations} {levelUpModal.level}!
-              </div>
-            </div>
-            
-            {/* Tap to Continue - Positioned at bottom of screen */}
-            <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 text-muted-foreground text-sm animate-pulse">
-              Tap to continue
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Developer Panel */}
       <DeveloperPanel
