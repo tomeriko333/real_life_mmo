@@ -152,7 +152,7 @@ const PersistentXPBar = ({
                 {currentXP.toLocaleString()} XP
               </span>
               <span className="text-muted-foreground">
-                {levelInfo.xpForNext ? `${levelInfo.xpUntilNext.toLocaleString()} ${t.xpToNext}` : 'Max Level!'}
+                {levelInfo.nextLevelXP ? `${levelInfo.xpToNext.toLocaleString()} ${t.xpToNext}` : 'Max Level!'}
               </span>
             </div>
             
@@ -162,8 +162,8 @@ const PersistentXPBar = ({
             />
             
             <div className="flex justify-between text-xs text-muted-foreground">
-              <span>{levelInfo.xpForCurrent?.toLocaleString() || 0}</span>
-              <span>{levelInfo.xpForNext?.toLocaleString() || 'Max'}</span>
+              <span>{levelInfo.currentLevelXP?.toLocaleString() || 0}</span>
+              <span>{levelInfo.nextLevelXP?.toLocaleString() || 'Max'}</span>
             </div>
           </div>
 
@@ -172,7 +172,7 @@ const PersistentXPBar = ({
             <Badge variant="secondary" className="text-xs px-2 py-1">
               {t.totalXP}: {currentXP.toLocaleString()}
             </Badge>
-            {levelInfo.xpForNext && (
+            {levelInfo.nextLevelXP && (
               <Badge variant="outline" className="text-xs px-2 py-1">
                 {Math.round(progressPercentage)}% ➜ {currentLevel + 1}
               </Badge>

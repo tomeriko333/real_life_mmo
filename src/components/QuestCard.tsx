@@ -198,7 +198,7 @@ const QuestCard = ({ quest, onComplete, isHebrew = false, endlessMode = false, a
       {/* Mobile Layout */}
       <div className="md:hidden">
         <div className="flex items-start justify-between mb-2">
-          <div className="flex items-start gap-2 min-w-0 flex-1">
+          <div className="flex items-start gap-2 min-w-0 flex-1 pr-2">
             <div className="text-lg flex-shrink-0">{quest.icon}</div>
             <div className="min-w-0 flex-1">
               <h3 className={`font-medium text-sm leading-tight ${quest.completed ? 'line-through text-muted-foreground' : 'text-foreground'}`}>
@@ -206,7 +206,7 @@ const QuestCard = ({ quest, onComplete, isHebrew = false, endlessMode = false, a
               </h3>
             </div>
           </div>
-          <Badge className={`text-xs px-1.5 py-0.5 flex-shrink-0 ${difficultyColors[quest.difficulty]}`}>
+          <Badge className={`text-xs px-1.5 py-0.5 flex-shrink-0 ml-1 ${difficultyColors[quest.difficulty]}`}>
             {t[quest.difficulty]}
           </Badge>
         </div>
@@ -245,7 +245,7 @@ const QuestCard = ({ quest, onComplete, isHebrew = false, endlessMode = false, a
             <div className="text-2xl flex-shrink-0">{quest.icon}</div>
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2 mb-1">
-                <h3 className={`font-semibold text-base leading-tight break-words ${quest.completed ? 'line-through text-muted-foreground' : 'text-foreground'}`}>
+                <h3 className={`font-bold text-lg leading-tight break-words ${quest.completed ? 'line-through text-muted-foreground' : 'text-foreground'}`}>
                   {isHebrew && quest.titleHebrew ? quest.titleHebrew : quest.title}
                 </h3>
                 {quest.seasonal && <Badge className="text-xs bg-accent/20 text-accent flex-shrink-0">🎉 {t.holiday}</Badge>}
